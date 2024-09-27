@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Karteikarten</h1>
+    <div id="flashcards-container"></div>
+    <a href="index.html">Zurück</a>
+    <script type="module">
+        import { vocabularySets } from './vocabularySets.js';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const setKey = urlParams.get('set');
+        const set = vocabularySets[setKey]; // Greift auf die importierte Struktur zu
+
+        const container = document.getElementById('flashcards-container');
+        
+        if (set) {
+            set.forEach(vocab => {
+                const card = document.createElement('div');
+                card.className = 'flashcard';
+                card.innerHTML = `<div class="front">${vocab.translation}</div><div class="back">${vocab.word}</div>`;
+                container.appendChild(card);
+            });
+        } else {
+            container.innerHTML = '<p>Kein Vokabelset gefunden.</p>';
+        }
+
+        // Funktion zum Drehen der Karte
+        document.querySelectorAll('.flashcard').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+    </script>
+</body>
+</html>
